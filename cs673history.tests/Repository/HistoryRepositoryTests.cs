@@ -1,13 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using cs673history.Repository;
-using Microsoft.Azure.Cosmos;
+using cs673history.Repository.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace cs673history.tests.Repository
 {
     [TestClass]
     [TestCategory("Integration")]
-    [Ignore]
+    //[Ignore]
     public class HistoryRepositoryTests
     {
         private IHistoryRepository _historyRepository;
@@ -17,7 +18,7 @@ namespace cs673history.tests.Repository
         [TestInitialize]
         public void Init()
         {
-            _historyRepository = new HistoryRepository(new CosmosClient(ConnectionString));
+            _historyRepository = new HistoryRepository(CosmosClientBuilder.BuildCosmosClient(ConnectionString));
         }
 
         [TestMethod]
@@ -26,6 +27,25 @@ namespace cs673history.tests.Repository
             //arrange
             //act
             await _historyRepository.CreateDatabase();
+
+            //assert
+            //check db
+        }
+
+        [TestMethod]
+        public async Task SaveHistory()
+        {
+            //arrange
+            var historyItem = new HistoryItem
+            {
+                Date = DateTimeOffset.Now,
+                Title = "title",
+                Upc = "upc",
+                User = "user"
+            };
+
+            //act
+            await _historyRepository.SaveHistory(historyItem);
 
             //assert
             //check db
