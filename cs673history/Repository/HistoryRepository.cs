@@ -32,7 +32,7 @@ namespace cs673history.Repository
         {
             var pageResult = new PageResult<HistoryItem>();
             var container = _cosmosClient.GetContainer(DatabaseId, ContainerId);
-            var countQuery = new QueryDefinition($"SELECT value count(1) FROM c where c.user = @user")
+            var countQuery = new QueryDefinition("SELECT value count(1) FROM c where c.user = @user")
                 .WithParameter("@user", historyQuery.User);
 
             var countQueryResult = container.GetItemQueryIterator<long>(countQuery);
@@ -41,7 +41,7 @@ namespace cs673history.Repository
                 pageResult.Total = (await countQueryResult.ReadNextAsync()).FirstOrDefault();
             }
 
-            var query = new QueryDefinition($"SELECT * FROM c where c.user = @user OFFSET {historyQuery.Skip} LIMIT {historyQuery.Take}")
+            var query = new QueryDefinition($"SELECT * FROM c where c.user = @user ORDER BY c.date DESC OFFSET {historyQuery.Skip} LIMIT {historyQuery.Take}")
                 .WithParameter("@user", historyQuery.User);
 
             var queryResult = container.GetItemQueryIterator<HistoryItem>(query);

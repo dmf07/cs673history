@@ -58,8 +58,7 @@ namespace cs673history.tests.Repository
             var historyQuery = new HistoryQuery
             {
                 User = "user",
-                Take = 1,
-                Skip = 1
+                Take = 1
             };
 
             //act
