@@ -7,5 +7,6 @@ namespace cs673history.Repository
     {
         Task CreateDatabase();
         Task SaveHistory(HistoryItem historyItem);
+        Task<PageResult<HistoryItem>> GetHistory(HistoryQuery h);
     }
 }
