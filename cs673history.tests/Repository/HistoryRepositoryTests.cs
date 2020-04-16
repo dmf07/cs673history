@@ -8,7 +8,7 @@ namespace cs673history.tests.Repository
 {
     [TestClass]
     [TestCategory("Integration")]
-    //[Ignore]
+    [Ignore]
     public class HistoryRepositoryTests
     {
         private IHistoryRepository _historyRepository;
