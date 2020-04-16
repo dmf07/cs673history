@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using cs673history.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -51,6 +52,8 @@ namespace cs673history
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            Task.Run(async () => await app.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<IHistoryRepository>()
+                .CreateDatabase());
         }
     }
 }
