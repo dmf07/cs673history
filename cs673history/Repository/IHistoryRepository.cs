@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using cs673history.Repository.Models;
 
 namespace cs673history.Repository
@@ -7,6 +8,6 @@ namespace cs673history.Repository
     {
         Task CreateDatabase();
         Task SaveHistory(HistoryItem historyItem);
-        Task<PageResult<HistoryItem>> GetHistory(HistoryQuery historyQuery);
+        Task<IEnumerable<HistoryItem>> GetHistory(string user);
     }
 }

@@ -22,6 +22,12 @@ namespace cs673history
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddCors(o => o.AddPolicy("CORS", builder =>
+            {
+                builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+            }));
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -47,7 +53,7 @@ namespace cs673history
             }
 
             app.UseRouting();
-
+            app.UseCors("CORS");
             app.UseAuthentication();
             app.UseAuthorization();
 

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using cs673history.Repository.Models;
 using Microsoft.Azure.Cosmos;
@@ -28,30 +28,19 @@ namespace cs673history.Repository
             await container.CreateItemAsync(historyItem);
         }
 
-        public async Task<PageResult<HistoryItem>> GetHistory(HistoryQuery historyQuery)
+        public async Task<IEnumerable<HistoryItem>> GetHistory(string user)
         {
-            var pageResult = new PageResult<HistoryItem>();
+            var historyItems = new List<HistoryItem>();
             var container = _cosmosClient.GetContainer(DatabaseId, ContainerId);
-            var countQuery = new QueryDefinition("SELECT value count(1) FROM c where c.user = @user")
-                .WithParameter("@user", historyQuery.User);
-
-            var countQueryResult = container.GetItemQueryIterator<long>(countQuery);
-            while (countQueryResult.HasMoreResults)
-            {
-                pageResult.Total = (await countQueryResult.ReadNextAsync()).FirstOrDefault();
-            }
-
-            var query = new QueryDefinition($"SELECT * FROM c where c.user = @user ORDER BY c.date DESC OFFSET {historyQuery.Skip} LIMIT {historyQuery.Take}")
-                .WithParameter("@user", historyQuery.User);
+            var query = new QueryDefinition($"SELECT * FROM c where c.user = @user ORDER BY c.date DESC")
+                .WithParameter("@user", user);
 
             var queryResult = container.GetItemQueryIterator<HistoryItem>(query);
             while (queryResult.HasMoreResults)
             {
-                pageResult.Results.AddRange((await queryResult.ReadNextAsync()).Resource);
+                historyItems.AddRange((await queryResult.ReadNextAsync()).Resource);
             }
-
-            return pageResult;
-
+            return historyItems;
         }
     }
 }

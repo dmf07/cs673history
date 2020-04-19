@@ -37,14 +37,9 @@ namespace cs673history.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetHistory([FromQuery]PageRequest pageRequest)
+        public async Task<IActionResult> GetHistory()
         {
-            return Ok(await _historyRepository.GetHistory(new HistoryQuery
-            {
-                Skip = pageRequest.Skip,
-                Take = pageRequest.Take,
-                User = User.Claims.First(x => x.Type == JwtRegisteredClaimNames.Email).Value
-            }));
+            return Ok(await _historyRepository.GetHistory(User.Claims.First(x => x.Type == JwtRegisteredClaimNames.Email).Value));
         }
     }
 }

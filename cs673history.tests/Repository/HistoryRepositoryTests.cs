@@ -55,16 +55,13 @@ namespace cs673history.tests.Repository
         public async Task GetHistory()
         {
             //arrange
-            var historyQuery = new HistoryQuery
-            {
-                User = "user",
-                Take = 1
-            };
+            var user = "user";
 
             //act
-            var result = await _historyRepository.GetHistory(historyQuery);
+            var result = await _historyRepository.GetHistory(user);
+
             //assert
-            //check db
+            //check item
         }
     }
 }
