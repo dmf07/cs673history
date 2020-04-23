@@ -42,5 +42,12 @@ namespace cs673history.Repository
             }
             return historyItems;
         }
+
+        public async Task DeleteHistoryItem(string id, string user)
+        {
+            var container = _cosmosClient.GetContainer(DatabaseId, ContainerId);
+            await container.DeleteItemAsync<HistoryItem>(id, new PartitionKey(user));
+        }
+
     }
 }

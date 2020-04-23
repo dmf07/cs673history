@@ -9,5 +9,6 @@ namespace cs673history.Repository
         Task CreateDatabase();
         Task SaveHistory(HistoryItem historyItem);
         Task<IEnumerable<HistoryItem>> GetHistory(string user);
+        Task DeleteHistoryItem(string id, string user);
     }
 }

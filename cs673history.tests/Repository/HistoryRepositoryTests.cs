@@ -63,5 +63,20 @@ namespace cs673history.tests.Repository
             //assert
             //check item
         }
+
+        [TestMethod]
+        public async Task DeleteHistoryItem()
+        {
+            //arrange
+            var id = "b4cd9b0f-d45c-4b5c-a31e-0eba23afc108";
+            var user = "dmf0711@gmail.com";
+
+            //act
+            await _historyRepository.DeleteHistoryItem(id,user);
+
+            //assert
+            //check db
+        }
+
     }
 }
