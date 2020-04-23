@@ -2,7 +2,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
-using cs673history.Controllers.Models;
 using cs673history.Repository;
 using cs673history.Repository.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -40,6 +39,14 @@ namespace cs673history.Controllers
         public async Task<IActionResult> GetHistory()
         {
             return Ok(await _historyRepository.GetHistory(User.Claims.First(x => x.Type == JwtRegisteredClaimNames.Email).Value));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteHistory([FromRoute]DeleteHistoryItem deleteHistoryItem)
+        {
+            await _historyRepository.DeleteHistoryItem(deleteHistoryItem.Id.ToString(),
+                User.Claims.First(x => x.Type == JwtRegisteredClaimNames.Email).Value);
+            return Accepted();
         }
     }
 }
